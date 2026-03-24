@@ -1,0 +1,6 @@
+/* Minimal reset - rest handled by App.css */
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
