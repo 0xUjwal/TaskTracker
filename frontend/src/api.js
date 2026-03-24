@@ -1,4 +1,4 @@
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 async function request(endpoint, { method = "GET", body, token } = {}) {
   const headers = { "Content-Type": "application/json" };
@@ -20,17 +20,23 @@ async function request(endpoint, { method = "GET", body, token } = {}) {
 }
 
 export const authAPI = {
-  signup: (body) => request("/auth/signup", { method: "POST", body }),
-  login: (body) => request("/auth/login", { method: "POST", body }),
+  signup: (body) => request("/api/auth/signup", { method: "POST", body }),
+  login: (body) => request("/api/auth/login", { method: "POST", body }),
 };
 
 export const taskAPI = {
-  getAll: (token, params = "") => request(`/tasks?${params}`, { token }),
+  getAll: (token, params = "") =>
+    request(`/api/tasks?${params}`, { token }),
+
   create: (token, body) =>
-    request("/tasks", { method: "POST", body, token }),
+    request("/api/tasks", { method: "POST", body, token }),
+
   update: (token, id, body) =>
-    request(`/tasks/${id}`, { method: "PUT", body, token }),
+    request(`/api/tasks/${id}`, { method: "PUT", body, token }),
+
   delete: (token, id) =>
-    request(`/tasks/${id}`, { method: "DELETE", token }),
-  analytics: (token) => request("/tasks/analytics", { token }),
+    request(`/api/tasks/${id}`, { method: "DELETE", token }),
+
+  analytics: (token) =>
+    request("/api/tasks/analytics", { token }),
 };

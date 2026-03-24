@@ -8,16 +8,25 @@ const taskRoutes = require("./routes/tasks");
 
 const app = express();
 
-app.use(cors());
+// CORS (allow frontend domain)
+app.use(cors({
+  origin: "https://task-tracker-project-alpha.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+
 app.use(express.json());
 
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
 
+// Test route
 app.get("/", (req, res) => {
   res.send("API Running");
 });
 
+// Error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(err.statusCode || 500).json({
@@ -25,7 +34,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// MongoDB connection (no app.listen)
+// MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("Connected to MongoDB"))
