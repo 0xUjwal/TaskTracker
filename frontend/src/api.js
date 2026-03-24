@@ -1,4 +1,4 @@
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+const API_URL = (process.env.REACT_APP_API_URL || "http://localhost:5000").replace(/\/+$/, "");
 
 async function request(endpoint, { method = "GET", body, token } = {}) {
   const headers = { "Content-Type": "application/json" };
@@ -42,5 +42,5 @@ export const taskAPI = {
     request(`/api/tasks/${id}`, { method: "DELETE", token }),
 
   analytics: (token) =>
-    request("/api/analytics", { token }),
+    request("/api/tasks/analytics", { token }),
 };
