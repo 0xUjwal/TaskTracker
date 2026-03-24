@@ -2,6 +2,8 @@
 
 A full-stack Task Tracker web app built with React, Node.js, Express, and MongoDB.
 
+**Live Demo:** [https://task-tracker-project-alpha.vercel.app](https://task-tracker-project-alpha.vercel.app)
+
 ## Features
 
 - User signup & login with JWT authentication
@@ -98,73 +100,3 @@ The app opens at `http://localhost:3000`.
 - **CSS Variables:** Theme switching via CSS custom properties on the body class — no library needed.
 - **Global Error Middleware:** All backend errors funnel through a single Express error handler for consistent error responses.
 
-## Deployment on Vercel
-
-### Step 1: Set up MongoDB Atlas (free cloud database)
-
-1. Go to [mongodb.com/atlas](https://www.mongodb.com/atlas) and create a free account
-2. Create a free cluster (M0 tier)
-3. Go to **Database Access** → Add a database user with a password
-4. Go to **Network Access** → Click **Allow Access from Anywhere** (0.0.0.0/0)
-5. Go to **Database** → Click **Connect** → Choose **Drivers** → Copy the connection string
-   - It looks like: `mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/taskmanager`
-
-### Step 2: Push to GitHub
-
-Create two separate GitHub repositories (or one monorepo):
-
-```bash
-# Option A: Two separate repos (recommended for Vercel)
-
-# Backend repo
-cd backend
-git init
-git add .
-git commit -m "initial commit"
-git remote add origin https://github.com/YOUR_USERNAME/tasktracker-backend.git
-git push -u origin main
-
-# Frontend repo
-cd ../frontend
-git init
-git add .
-git commit -m "initial commit"
-git remote add origin https://github.com/YOUR_USERNAME/tasktracker-frontend.git
-git push -u origin main
-```
-
-### Step 3: Deploy Backend on Vercel
-
-1. Go to [vercel.com](https://vercel.com) and sign in with GitHub
-2. Click **Add New → Project**
-3. Import your **backend** repository
-4. In **Settings**, set the **Root Directory** to `.` (or `backend` if monorepo)
-5. Add these **Environment Variables**:
-   - `MONGO_URI` = your MongoDB Atlas connection string
-   - `JWT_SECRET` = a strong random secret string
-6. Click **Deploy**
-7. After deployment, copy the backend URL (e.g., `https://tasktracker-backend.vercel.app`)
-
-### Step 4: Deploy Frontend on Vercel
-
-1. Click **Add New → Project** again
-2. Import your **frontend** repository
-3. Framework Preset should auto-detect as **Create React App**
-4. Add this **Environment Variable**:
-   - `REACT_APP_API_URL` = `https://tasktracker-backend.vercel.app/api`
-   (use your actual backend URL from Step 3)
-5. Click **Deploy**
-
-### Step 5: Update Backend CORS (important)
-
-After deploying the frontend, update `backend/server.js` to allow your frontend domain:
-
-```js
-app.use(cors({
-  origin: "https://tasktracker-frontend.vercel.app"
-}));
-```
-
-Then push and redeploy the backend.
-
-Your app is now live!
