@@ -4,19 +4,23 @@ async function request(endpoint, { method = "GET", body, token } = {}) {
   const headers = { "Content-Type": "application/json" };
   if (token) headers["Authorization"] = `Bearer ${token}`;
 
-  const res = await fetch(`${API_URL}${endpoint}`, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined,
-  });
+  try {
+    const res = await fetch(`${API_URL}${endpoint}`, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (!res.ok) {
-    throw new Error(data.message || "Something went wrong");
+    if (!res.ok) {
+      throw new Error(data.message || "Something went wrong");
+    }
+
+    return data;
+  } catch (error) {
+    throw new Error(error.message || "Network request failed");
   }
-
-  return data;
 }
 
 export const authAPI = {
@@ -26,7 +30,7 @@ export const authAPI = {
 
 export const taskAPI = {
   getAll: (token, params = "") =>
-    request(`/api/tasks?${params}`, { token }),
+    request(`/api/tasks${params ? `?${params}` : ""}`, { token }),
 
   create: (token, body) =>
     request("/api/tasks", { method: "POST", body, token }),
@@ -38,5 +42,5 @@ export const taskAPI = {
     request(`/api/tasks/${id}`, { method: "DELETE", token }),
 
   analytics: (token) =>
-    request("/api/tasks/analytics", { token }),
+    request("/api/analytics", { token }),
 };

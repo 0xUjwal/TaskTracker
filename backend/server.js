@@ -8,12 +8,16 @@ const taskRoutes = require("./routes/tasks");
 
 const app = express();
 
-// CORS (allow frontend domain)
+const cors = require("cors");
+
 app.use(cors({
   origin: "https://task-tracker-project-alpha.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
 }));
+
+app.options("*", cors());
 
 app.use(express.json());
 
